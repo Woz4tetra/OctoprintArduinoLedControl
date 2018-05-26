@@ -35,16 +35,18 @@ class CustomSettings:
     PORT_SETTING = "Port"
     BAUD_RATE_SETTING = "Baud Rate"
     TOOL_HEAD_SETTING = "Tool Head"
-    PRINT_STARTED_MESSAGE_SETTING = "Print started message"
-    PRINT_FINISHED_MESSAGE_SETTING = "Print finished message"
 
+    PRINT_MESSAGE_FINISHED = 0
+    PRINT_MESSAGE_HEATING = 1
+    PRINT_MESSAGE_STARTING = 2
+    PRINT_MESSAGE_NUM_STATES = 3
 
 # adding custom gcode events
-comm.gcodeToEvent["M104"] = "SetExtruderTemp"
-comm.gcodeToEvent["M140"] = "SetBedTemp"
-comm.gcodeToEvent["M109"] = "WaitingForExtruderTemp"
-comm.gcodeToEvent["M190"] = "WaitingForBedTemp"
-comm.gcodeToEvent["M117"] = "PrinterSentMessage"
+comm.gcodeToEvent["M104"] = CustomSettings.SET_EXTRUDER_TEMP_EVENT
+comm.gcodeToEvent["M140"] = CustomSettings.SET_BED_TEMP_EVENT
+comm.gcodeToEvent["M109"] = CustomSettings.WAITING_FOR_EXTRUDER_TEMP_EVENT
+comm.gcodeToEvent["M190"] = CustomSettings.WAITING_FOR_BED_TEMP_EVENT
+comm.gcodeToEvent["M117"] = CustomSettings.PRINTER_SENT_MESSAGE_EVENT
 
 
 class ArduinoLedControlPlugin(
@@ -53,6 +55,7 @@ class ArduinoLedControlPlugin(
     octoprint.plugin.EventHandlerPlugin,
     octoprint.plugin.BlueprintPlugin,
     octoprint.plugin.SettingsPlugin):
+
     command_names = {
         CustomSettings.OFF_COMMAND         : "o",
         CustomSettings.WHITE_COMMAND       : "w",
@@ -82,8 +85,6 @@ class ArduinoLedControlPlugin(
         CustomSettings.PORT_SETTING                   : "/dev/ttyACM1",
         CustomSettings.BAUD_RATE_SETTING              : 9600,
         CustomSettings.TOOL_HEAD_SETTING              : "tool0",
-        CustomSettings.PRINT_STARTED_MESSAGE_SETTING  : "Mini Printing...",
-        CustomSettings.PRINT_FINISHED_MESSAGE_SETTING : "Cooling please wait",
 
         Events.CONNECTING                             : "white cycle",
         Events.CONNECTED                              : "white",
@@ -126,6 +127,7 @@ class ArduinoLedControlPlugin(
         self.max_temperature = 140.0  # red light color
 
         self.print_is_running = False
+        self.print_state = CustomSettings.PRINT_MESSAGE_FINISHED
 
         self.check_temp_timer = RepeatedTimer(
             self.check_temp_time_interval,
@@ -248,13 +250,18 @@ class ArduinoLedControlPlugin(
         self._logger.info("received event: '%s', payload: '%s', command: '%s'" % (event, payload, command))
 
         if event == CustomSettings.PRINTER_SENT_MESSAGE_EVENT:
-            if command == self._settings.get([CustomSettings.PRINT_STARTED_MESSAGE_SETTING]):
-                self.print_is_running = True
-                self._logger.info("Print has started!")
+            if command == self._settings.get([CustomSettings.PRINTER_SENT_MESSAGE_EVENT]):
+                self.print_state += 1
+                if self.print_state >= CustomSettings.PRINT_MESSAGE_NUM_STATES:
+                    self.print_state = 0
 
-            elif command == self._settings.get([CustomSettings.PRINT_FINISHED_MESSAGE_SETTING]):
-                self.print_is_running = False
-                self._logger.info("Print has finished!")
+                if self.print_state == CustomSettings.PRINT_MESSAGE_STARTING:
+                    self.print_is_running = True
+                    self._logger.info("Print has started!")
+
+                elif self.print_state == CustomSettings.PRINT_MESSAGE_FINISHED:
+                    self.print_is_running = False
+                    self._logger.info("Print has finished!")
 
         if command is not None:
             if command == "temperature":
