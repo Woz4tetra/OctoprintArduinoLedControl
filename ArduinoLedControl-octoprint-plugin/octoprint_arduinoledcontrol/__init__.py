@@ -8,6 +8,37 @@ from octoprint.util import comm
 import serial
 import time
 
+
+class CustomSettings:
+    SET_EXTRUDER_TEMP_EVENT = "SetExtruderTemp"
+    SET_BED_TEMP_EVENT = "SetBedTemp"
+    WAITING_FOR_EXTRUDER_TEMP_EVENT = "WaitingForExtruderTemp"
+    WAITING_FOR_BED_TEMP_EVENT = "WaitingForBedTemp"
+    PRINTER_SENT_MESSAGE_EVENT = "PrinterSentMessage"
+
+    OFF_COMMAND = "off"
+    WHITE_COMMAND = "white"
+    TEMPERATURE_COMMAND = "temperature"
+    SLOW_RAINBOW_COMMAND = "slow rainbow"
+    FAST_RAINBOW_COMMAND = "fast rainbow"
+    WHITE_FADE_COMMAND = "white fade"
+    BLUE_FADE_COMMAND = "blue fade"
+    RED_FADE_COMMAND = "red fade"
+    GREEN_FADE_COMMAND = "green fade"
+    YELLOW_FADE_COMMAND = "yellow fade"
+    WHITE_CYCLE_COMMAND = "white cycle"
+    BLUE_CYCLE_COMMAND = "blue cycle"
+    RED_CYCLE_COMMAND = "red cycle"
+    GREEN_CYCLE_COMMAND = "green cycle"
+    YELLOW_CYCLE_COMMAND = "yellow cycle"
+
+    PORT_SETTING = "Port"
+    BAUD_RATE_SETTING = "Baud Rate"
+    TOOL_HEAD_SETTING = "Tool Head"
+    PRINT_STARTED_MESSAGE_SETTING = "Print started message"
+    PRINT_FINISHED_MESSAGE_SETTING = "Print finished message"
+
+
 # adding custom gcode events
 comm.gcodeToEvent["M104"] = "SetExtruderTemp"
 comm.gcodeToEvent["M140"] = "SetBedTemp"
@@ -23,62 +54,60 @@ class ArduinoLedControlPlugin(
     octoprint.plugin.BlueprintPlugin,
     octoprint.plugin.SettingsPlugin):
     command_names = {
-        "off"         : "o",
-        "white"       : "w",
-        "temperature" : "t%03d",
+        CustomSettings.OFF_COMMAND         : "o",
+        CustomSettings.WHITE_COMMAND       : "w",
+        CustomSettings.TEMPERATURE_COMMAND : "t%03d",
 
         # rainbow commands
-        "slow rainbow": "rs",
-        "fast rainbow": "rf",
+        CustomSettings.SLOW_RAINBOW_COMMAND: "rs",
+        CustomSettings.FAST_RAINBOW_COMMAND: "rf",
 
         # fade commands
-        "white fade"  : "fw",
-        "blue fade"   : "fb",
-        "red fade"    : "fr",
-        "green fade"  : "fg",
-        "yellow fade" : "fy",
+        CustomSettings.WHITE_FADE_COMMAND  : "fw",
+        CustomSettings.BLUE_FADE_COMMAND   : "fb",
+        CustomSettings.RED_FADE_COMMAND    : "fr",
+        CustomSettings.GREEN_FADE_COMMAND  : "fg",
+        CustomSettings.YELLOW_FADE_COMMAND : "fy",
 
         # cycle commands
-        "white cycle" : "cw",
-        "blue cycle"  : "cb",
-        "red cycle"   : "cr",
-        "green cycle" : "cg",
-        "yellow cycle": "cy",
+        CustomSettings.WHITE_CYCLE_COMMAND : "cw",
+        CustomSettings.BLUE_CYCLE_COMMAND  : "cb",
+        CustomSettings.RED_CYCLE_COMMAND   : "cr",
+        CustomSettings.GREEN_CYCLE_COMMAND : "cg",
+        CustomSettings.YELLOW_CYCLE_COMMAND: "cy",
     }
 
     default_led_settings = {
         # Printer communication events
-        "Port"                  : "/dev/ttyACM1",
-        "Baud Rate"             : 9600,
-        "Tool Head"             : "tool0",
-        "Print started message" : "Mini Printing...",
-        "Print finished message": "Cooling please wait",
+        CustomSettings.PORT_SETTING                   : "/dev/ttyACM1",
+        CustomSettings.BAUD_RATE_SETTING              : 9600,
+        CustomSettings.TOOL_HEAD_SETTING              : "tool0",
+        CustomSettings.PRINT_STARTED_MESSAGE_SETTING  : "Mini Printing...",
+        CustomSettings.PRINT_FINISHED_MESSAGE_SETTING : "Cooling please wait",
 
-        Events.CONNECTING       : "white cycle",
-        Events.CONNECTED        : "white",
-        Events.DISCONNECTING    : "white fade",
-        Events.DISCONNECTED     : "off",
-        Events.ERROR            : "red fade",
+        Events.CONNECTING                             : "white cycle",
+        Events.CONNECTED                              : "white",
+        Events.DISCONNECTING                          : "white fade",
+        Events.DISCONNECTED                           : "off",
+        Events.ERROR                                  : "red fade",
 
         # Printing events
-        Events.PRINT_FAILED     : "red fade",
-        Events.PRINT_DONE       : "slow rainbow",
-        Events.PRINT_CANCELLING : "red cycle",
-        Events.PRINT_CANCELLED  : "red fade",
-        Events.PRINT_PAUSED     : "blue fade",
-        Events.PRINT_RESUMED    : "white",
-        "PrinterSentMessage"    : "white",
+        Events.PRINT_FAILED                           : "red fade",
+        Events.PRINT_DONE                             : "slow rainbow",
+        Events.PRINT_CANCELLING                       : "red cycle",
+        Events.PRINT_CANCELLED                        : "red fade",
+        Events.PRINT_PAUSED                           : "blue fade",
+        Events.PRINT_RESUMED                          : "white",
+        CustomSettings.PRINTER_SENT_MESSAGE_EVENT     : "white",
 
         # GCODE Processing events (not triggered when printing from SD)
-        Events.HOME             : "white fade",
-        Events.Z_CHANGE         : "white",
-        # Events.DWELL            : "temperature",
-        # Events.COOLING          : "temperature",
-        Events.ALERT            : "red cycle",
-        Events.E_STOP           : "red cycle",
-        Events.POSITION_UPDATE  : "white",
-        "WaitingForExtruderTemp": "temperature",
-        "SetExtruderTemp"       : "temperature"
+        Events.HOME                                   : "white fade",
+        Events.Z_CHANGE                               : "white",
+        Events.ALERT                                  : "red cycle",
+        Events.E_STOP                                 : "red cycle",
+        Events.POSITION_UPDATE                        : "white",
+        CustomSettings.WAITING_FOR_EXTRUDER_TEMP_EVENT: "temperature",
+        CustomSettings.SET_EXTRUDER_TEMP_EVENT        : "temperature"
     }
 
     def __init__(self):
@@ -116,7 +145,7 @@ class ArduinoLedControlPlugin(
             self._logger.info("Temperature check timer already started")
 
         result = self._printer.get_current_temperatures()
-        self.temp_check_tool = self._settings.get(["ToolHead"])
+        self.temp_check_tool = self._settings.get([CustomSettings.TOOL_HEAD_SETTING])
         target_t = result[self.temp_check_tool]["target"]
 
         # if self.prev_target_temperature == target_t:
@@ -131,8 +160,8 @@ class ArduinoLedControlPlugin(
 
     def check_device(self):
         try:
-            port = str(self._settings.get(["Port"]))
-            baud = int(self._settings.get(["Baud Rate"]))
+            port = str(self._settings.get([CustomSettings.PORT_SETTING]))
+            baud = int(self._settings.get([CustomSettings.BAUD_RATE_SETTING]))
         except BaseException as e:
             return e
 
@@ -217,10 +246,10 @@ class ArduinoLedControlPlugin(
         command = self._settings.get([event])
         self._logger.info("received event: '%s', payload: '%s', command: '%s'" % (event, payload, command))
 
-        if event == "PrinterSentMessage":
-            if command == self._settings.get(["Print started message"]):
+        if event == CustomSettings.PRINTER_SENT_MESSAGE_EVENT:
+            if command == self._settings.get([CustomSettings.PRINT_STARTED_MESSAGE_SETTING]):
                 self.print_is_running = True
-            elif command == self._settings.get(["Print finished message"]):
+            elif command == self._settings.get([CustomSettings.PRINT_FINISHED_MESSAGE_SETTING]):
                 self.print_is_running = False
 
         if command is not None:
