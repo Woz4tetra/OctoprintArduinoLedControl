@@ -220,6 +220,7 @@ class ArduinoLedControlPlugin(
         # if target_t < actual_t:  # cooling down
         #     value = 255 - value
 
+        self._logger.info("should_send_temperature: %s, print_is_running: %s" % (self.should_send_temperature, self.print_is_running))
         if self.should_send_temperature and not self.print_is_running:
             self._logger.info(
                 "Sending temperature command value: %s. Target: %s, Actual: %s" % (value, target_t, actual_t))
@@ -249,12 +250,16 @@ class ArduinoLedControlPlugin(
         if event == CustomSettings.PRINTER_SENT_MESSAGE_EVENT:
             if command == self._settings.get([CustomSettings.PRINT_STARTED_MESSAGE_SETTING]):
                 self.print_is_running = True
+                self._logger.info("Print has started!")
+
             elif command == self._settings.get([CustomSettings.PRINT_FINISHED_MESSAGE_SETTING]):
                 self.print_is_running = False
+                self._logger.info("Print has finished!")
 
         if command is not None:
             if command == "temperature":
                 self.reset_check_timer()
+                self._logger.info("Received event to send temperature command")
             else:
                 self.cancel_check_timer()
                 self.issue_command(self.command_names[command])
