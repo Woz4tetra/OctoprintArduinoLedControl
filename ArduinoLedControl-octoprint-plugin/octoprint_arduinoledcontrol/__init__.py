@@ -76,7 +76,7 @@ class ArduinoLedControlPlugin(
         # Events.COOLING          : "temperature",
         Events.ALERT            : "red cycle",
         Events.E_STOP           : "red cycle",
-        # Events.POSITION_UPDATE  : "white",
+        Events.POSITION_UPDATE  : "white",
         "WaitingForExtruderTemp": "temperature",
         "SetExtruderTemp"       : "temperature"
     }
