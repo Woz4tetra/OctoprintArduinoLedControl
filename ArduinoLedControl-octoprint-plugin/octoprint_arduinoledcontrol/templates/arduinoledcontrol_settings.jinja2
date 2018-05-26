@@ -1,0 +1,372 @@
+<h3>Arduino LED Control Settings</h3>
+<form class="form-horizontal">
+	<div class="control-group">
+		<label class="control-label">{{ _('URL') }}</label>
+
+		<div class="controls">
+			Port to Arduino <input type="text" class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.Port">
+			Baud rate of Arduino <input type="text" class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.BaudRate">
+			<BR /><BR />
+
+			<h5>Event Light Codes</h5>
+
+			Connecting
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.Connecting">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+			Connected
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.Connected">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+            Disconnecting
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.Disconnecting">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+            Disconnected
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.Disconnected">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+            Error
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.Error">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+            PrintFailed
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.PrintFailed">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+            PrintDone
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.PrintDone">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+            PrintCancelling
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.PrintCancelling">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+            PrintCancelled
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.PrintCancelled">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+            PrintPaused
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.PrintPaused">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+            PrintResumed
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.PrintResumed">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+            Home
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.Home">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+            ZChange
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.ZChange">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+            Alert
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.Alert">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+            EStop
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.EStop">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+            WaitingForExtruderTemp
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.WaitingForExtruderTemp">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+            SetExtruderTemp
+            <select class="input-block-level" data-bind="value: settings.plugins.arduinoledcontrol.SetExtruderTemp">
+                <option value="off"         >off         </option>
+                <option value="white"       >white       </option>
+                <option value="temperature" >temperature </option>
+                <option value="slow rainbow">slow rainbow</option>
+                <option value="fast rainbow">fast rainbow</option>
+                <option value="white fade"  >white fade  </option>
+                <option value="blue fade"   >blue fade   </option>
+                <option value="red fade"    >red fade    </option>
+                <option value="green fade"  >green fade  </option>
+                <option value="yellow fade" >yellow fade </option>
+                <option value="white cycle" >white cycle </option>
+                <option value="blue cycle"  >blue cycle  </option>
+                <option value="red cycle"   >red cycle   </option>
+                <option value="green cycle" >green cycle </option>
+                <option value="yellow cycle">yellow cycle</option>
+            </select>
+            <BR /><BR />
+
+
+		</div>
+	</div>
+</form>

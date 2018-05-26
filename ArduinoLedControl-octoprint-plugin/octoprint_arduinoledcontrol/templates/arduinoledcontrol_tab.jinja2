@@ -1,0 +1,16 @@
+<div style="padding:5px;">
+	<!--<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"> </script>-->
+	<script>
+		function ArduinoLedControlCallApi(request) {
+			console.log("Arduino LED Control says: " + request);
+			var apiPrefix = "/plugin/arduinoledcontrol/";
+			$.get(apiPrefix + request);
+		}
+
+	</script>
+
+	<h3>Arduino LED Manual Controls</h3>
+    <input type="submit" class="btn btn-block control-box" value="On" onclick="ArduinoLedControlCallApi('white');">
+    <input type="submit" class="btn btn-block control-box" value="Off" onclick="ArduinoLedControlCallApi('off');">
+    <input type="submit" class="btn btn-block control-box" value="Rainbow" onclick="ArduinoLedControlCallApi('rainbow');">
+</div>
