@@ -198,8 +198,12 @@ class ArduinoLedControlPlugin(
 
     def check_hotend_temperature(self):
         result = self._printer.get_current_temperatures()
+        self._logger.info("Get temperatures result: %s" % str(result))
+
         target_t = result[self.temp_check_tool]["target"]
         actual_t = result[self.temp_check_tool]["actual"]
+
+        self._logger.info("Temperature values; target: %s, actual: %s" % (target_t, actual_t))
 
         # send temperature commands if a change in target temperature is detected
         if target_t != self.prev_target_temperature:
@@ -221,12 +225,9 @@ class ArduinoLedControlPlugin(
 
         self._logger.info("should_send_temperature: %s, print_is_running: %s" % (self.should_send_temperature, self.print_is_running))
         if self.should_send_temperature and not self.print_is_running:
-            self._logger.info(
-                "Sending temperature command value: %s. Target: %s, Actual: %s" % (value, target_t, actual_t))
+            self._logger.info("Sending temperature command value: %s" % value)
             self.issue_command(self.command_names["temperature"] % value)
-        else:
-            self._logger.info(
-                "Skipping temperature command value: %s. Target: %s, Actual: %s" % (value, target_t, actual_t))
+
 
     # octoprint.plugin.StartupPlugin
     def on_after_startup(self):
