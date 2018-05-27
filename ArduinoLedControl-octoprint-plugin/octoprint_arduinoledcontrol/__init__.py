@@ -257,10 +257,15 @@ class ArduinoLedControlPlugin(
 
         if event == Events.DISCONNECTED:
             self.printer_is_connected = False
+            self.print_is_running = False
 
         elif event == Events.CONNECTED:
             self.printer_is_connected = True
+            self.print_is_running = False
             self.reset_check_timer()
+
+        elif event in [Events.PRINT_DONE, Events.PRINT_FAILED, Events.PRINT_CANCELLING, Events.PRINT_CANCELLED, Events.ERROR]:
+            self.print_is_running = False
 
         elif event == CustomSettings.PRINTER_SENT_MESSAGE_EVENT:
             if command == self._settings.get([CustomSettings.PRINTER_SENT_MESSAGE_EVENT]):
