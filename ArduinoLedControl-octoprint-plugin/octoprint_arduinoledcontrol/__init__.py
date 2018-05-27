@@ -133,14 +133,14 @@ class ArduinoLedControlPlugin(
         self.check_temp_timer = RepeatedTimer(
             self.check_temp_time_interval,
             self.check_hotend_temperature,
-            run_first=True, condition=self.check_temp_timer_condition, daemon=False,
+            run_first=True
         )
 
     def cancel_check_timer(self):
         self.should_send_temperature = False
 
-    def check_temp_timer_condition(self):
-        return self.printer_is_connected
+    # def check_temp_timer_condition(self):
+    #     return self.printer_is_connected
 
     def reset_check_timer(self):
         if not self.check_timer_started:
