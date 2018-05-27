@@ -119,7 +119,7 @@ class ArduinoLedControlPlugin(
 
         self.temp_check_tool = "tool0"
         # self.initial_temperature = None
-        # self.prev_target_temperature = None
+        self.prev_target_temperature = None
         self.should_send_temperature = False
         self.check_timer_started = False
         self.check_temp_time_interval = 1.0
@@ -146,19 +146,9 @@ class ArduinoLedControlPlugin(
         else:
             self._logger.info("Temperature check timer already started")
 
-        result = self._printer.get_current_temperatures()
         self.temp_check_tool = self._settings.get([CustomSettings.TOOL_HEAD_SETTING])
-        target_t = result[self.temp_check_tool]["target"]
 
-        # if self.prev_target_temperature == target_t:
-        #     self._logger.info("Target temp '%s' is the same as previous command. Skipping." % target_t)
-        #     return
-        # self.prev_target_temperature = target_t
-
-        # self.initial_temperature = None
-        self.should_send_temperature = True
-
-        self._logger.info("Enabling temperature check timer to '%s'" % target_t)
+        self._logger.info("Enabling temperature check timer")
 
     def check_device(self):
         try:
@@ -179,6 +169,8 @@ class ArduinoLedControlPlugin(
             try:
                 self.device = serial.Serial(port, baud)
                 time.sleep(2)  # wait for arduino to connect
+
+                self.reset_check_timer()
                 return None
             except OSError as e:
                 return e
@@ -208,6 +200,11 @@ class ArduinoLedControlPlugin(
         result = self._printer.get_current_temperatures()
         target_t = result[self.temp_check_tool]["target"]
         actual_t = result[self.temp_check_tool]["actual"]
+
+        # send temperature commands if a change in target temperature is detected
+        if target_t != self.prev_target_temperature:
+            self.should_send_temperature = True
+            self.prev_target_temperature = target_t
 
         # if self.initial_temperature is None:
         #     self.initial_temperature = actual_t
