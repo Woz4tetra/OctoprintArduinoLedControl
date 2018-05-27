@@ -122,7 +122,7 @@ class ArduinoLedControlPlugin(
         self.prev_target_temperature = None
         self.should_send_temperature = False
         self.check_timer_started = False
-        self.check_temp_time_interval = 1.0
+        self.check_temp_time_interval = 3.0
         self.min_temperature = 35.0  # blue light color
         self.max_temperature = 140.0  # red light color
 
@@ -200,6 +200,11 @@ class ArduinoLedControlPlugin(
         result = self._printer.get_current_temperatures()
         self._logger.info("Get temperatures result: %s" % str(result))
 
+        if self.temp_check_tool not in result:
+            self.temp_check_tool = self._settings.get([CustomSettings.TOOL_HEAD_SETTING])
+            self._logger.warning("Tool head specified wasn't found. Will keep checking for it")
+            return
+        
         target_t = result[self.temp_check_tool]["target"]
         actual_t = result[self.temp_check_tool]["actual"]
 
