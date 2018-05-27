@@ -141,7 +141,7 @@ class ArduinoLedControlPlugin(
     def reset_check_timer(self):
         if not self.check_timer_started:
             self._logger.info("Starting temperature check timer")
-            self.check_temp_timer.start()
+            self.check_temp_timer.run()
             self.check_timer_started = True
         else:
             self._logger.info("Temperature check timer already started")
