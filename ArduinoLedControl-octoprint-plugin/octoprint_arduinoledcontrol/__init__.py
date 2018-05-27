@@ -41,11 +41,12 @@ class CustomSettings:
     PRINT_MESSAGE_STARTING = 2
     PRINT_MESSAGE_NUM_STATES = 3
 
+
 # adding custom gcode events
-comm.gcodeToEvent["M104"] = CustomSettings.SET_EXTRUDER_TEMP_EVENT
-comm.gcodeToEvent["M140"] = CustomSettings.SET_BED_TEMP_EVENT
-comm.gcodeToEvent["M109"] = CustomSettings.WAITING_FOR_EXTRUDER_TEMP_EVENT
-comm.gcodeToEvent["M190"] = CustomSettings.WAITING_FOR_BED_TEMP_EVENT
+# comm.gcodeToEvent["M104"] = CustomSettings.SET_EXTRUDER_TEMP_EVENT
+# comm.gcodeToEvent["M140"] = CustomSettings.SET_BED_TEMP_EVENT
+# comm.gcodeToEvent["M109"] = CustomSettings.WAITING_FOR_EXTRUDER_TEMP_EVENT
+# comm.gcodeToEvent["M190"] = CustomSettings.WAITING_FOR_BED_TEMP_EVENT
 comm.gcodeToEvent["M117"] = CustomSettings.PRINTER_SENT_MESSAGE_EVENT
 
 
@@ -55,7 +56,6 @@ class ArduinoLedControlPlugin(
     octoprint.plugin.EventHandlerPlugin,
     octoprint.plugin.BlueprintPlugin,
     octoprint.plugin.SettingsPlugin):
-
     command_names = {
         CustomSettings.OFF_COMMAND         : "o",
         CustomSettings.WHITE_COMMAND       : "w",
@@ -82,33 +82,33 @@ class ArduinoLedControlPlugin(
 
     default_led_settings = {
         # Printer communication events
-        CustomSettings.PORT_SETTING                   : "/dev/ttyACM1",
-        CustomSettings.BAUD_RATE_SETTING              : 9600,
-        CustomSettings.TOOL_HEAD_SETTING              : "tool0",
+        CustomSettings.PORT_SETTING              : "/dev/ttyACM1",
+        CustomSettings.BAUD_RATE_SETTING         : 9600,
+        CustomSettings.TOOL_HEAD_SETTING         : "tool0",
 
-        Events.CONNECTING                             : "white cycle",
-        Events.CONNECTED                              : "white",
-        Events.DISCONNECTING                          : "white fade",
-        Events.DISCONNECTED                           : "off",
-        Events.ERROR                                  : "red fade",
+        Events.CONNECTING                        : "white cycle",
+        Events.CONNECTED                         : "white",
+        Events.DISCONNECTING                     : "white fade",
+        Events.DISCONNECTED                      : "off",
+        Events.ERROR                             : "red fade",
 
         # Printing events
-        Events.PRINT_FAILED                           : "red fade",
-        Events.PRINT_DONE                             : "slow rainbow",
-        Events.PRINT_CANCELLING                       : "red cycle",
-        Events.PRINT_CANCELLED                        : "red fade",
-        Events.PRINT_PAUSED                           : "blue fade",
-        Events.PRINT_RESUMED                          : "white",
-        CustomSettings.PRINTER_SENT_MESSAGE_EVENT     : "white",
+        Events.PRINT_FAILED                      : "red fade",
+        Events.PRINT_DONE                        : "slow rainbow",
+        Events.PRINT_CANCELLING                  : "red cycle",
+        Events.PRINT_CANCELLED                   : "red fade",
+        Events.PRINT_PAUSED                      : "blue fade",
+        Events.PRINT_RESUMED                     : "white",
+        CustomSettings.PRINTER_SENT_MESSAGE_EVENT: "white",
 
         # GCODE Processing events (not triggered when printing from SD)
-        Events.HOME                                   : "white fade",
-        Events.Z_CHANGE                               : "white",
-        Events.ALERT                                  : "red cycle",
-        Events.E_STOP                                 : "red cycle",
-        Events.POSITION_UPDATE                        : "white",
-        CustomSettings.WAITING_FOR_EXTRUDER_TEMP_EVENT: "temperature",
-        CustomSettings.SET_EXTRUDER_TEMP_EVENT        : "temperature"
+        Events.HOME                              : "white fade",
+        Events.Z_CHANGE                          : "white",
+        Events.ALERT                             : "red cycle",
+        Events.E_STOP                            : "red cycle",
+        Events.POSITION_UPDATE                   : "white",
+        # CustomSettings.WAITING_FOR_EXTRUDER_TEMP_EVENT: "temperature",
+        # CustomSettings.SET_EXTRUDER_TEMP_EVENT        : "temperature"
     }
 
     def __init__(self):
@@ -223,11 +223,11 @@ class ArduinoLedControlPlugin(
         # if target_t < actual_t:  # cooling down
         #     value = 255 - value
 
-        self._logger.info("should_send_temperature: %s, print_is_running: %s" % (self.should_send_temperature, self.print_is_running))
+        self._logger.info(
+            "should_send_temperature: %s, print_is_running: %s" % (self.should_send_temperature, self.print_is_running))
         if self.should_send_temperature and not self.print_is_running:
             self._logger.info("Sending temperature command value: %s" % value)
             self.issue_command(self.command_names["temperature"] % value)
-
 
     # octoprint.plugin.StartupPlugin
     def on_after_startup(self):
@@ -262,13 +262,13 @@ class ArduinoLedControlPlugin(
                     self._logger.info("Print has finished!")
 
         if command is not None:
-            if command == "temperature":
-                self.reset_check_timer()
-                self._logger.info("Received event to send temperature command")
-            else:
-                self.cancel_check_timer()
-                self.issue_command(self.command_names[command])
-                self._logger.info("Received event to send command '%s'" % command)
+            # if command == "temperature":
+            #     self.reset_check_timer()
+            #     self._logger.info("Received event to send temperature command")
+            # else:
+            self.cancel_check_timer()
+            self.issue_command(self.command_names[command])
+            self._logger.info("Received event to send command '%s'" % command)
 
     # octoprint.plugin.BlueprintPlugin
     @octoprint.plugin.BlueprintPlugin.route("/white", methods=["GET"])
