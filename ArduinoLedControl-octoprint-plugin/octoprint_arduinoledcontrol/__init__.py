@@ -128,20 +128,24 @@ class ArduinoLedControlPlugin(
 
         self.print_is_running = False
         self.print_state = CustomSettings.PRINT_MESSAGE_FINISHED
+        self.printer_is_connected = False
 
         self.check_temp_timer = RepeatedTimer(
             self.check_temp_time_interval,
             self.check_hotend_temperature,
-            run_first=True
+            run_first=True, condition=self.check_temp_timer_condition, daemon=False,
         )
 
     def cancel_check_timer(self):
         self.should_send_temperature = False
 
+    def check_temp_timer_condition(self):
+        return self.printer_is_connected
+
     def reset_check_timer(self):
         if not self.check_timer_started:
             self._logger.info("Starting temperature check timer")
-            self.check_temp_timer.run()
+            self.check_temp_timer.start()
             self.check_timer_started = True
         else:
             self._logger.info("Temperature check timer already started")
@@ -170,7 +174,6 @@ class ArduinoLedControlPlugin(
                 self.device = serial.Serial(port, baud)
                 time.sleep(2)  # wait for arduino to connect
 
-                self.reset_check_timer()
                 return None
             except OSError as e:
                 return e
@@ -204,7 +207,7 @@ class ArduinoLedControlPlugin(
             self.temp_check_tool = self._settings.get([CustomSettings.TOOL_HEAD_SETTING])
             self._logger.warning("Tool head specified wasn't found. Will keep checking for it")
             return
-        
+
         target_t = result[self.temp_check_tool]["target"]
         actual_t = result[self.temp_check_tool]["actual"]
 
@@ -252,7 +255,14 @@ class ArduinoLedControlPlugin(
         command = self._settings.get([event])
         self._logger.info("received event: '%s', payload: '%s', command: '%s'" % (event, payload, command))
 
-        if event == CustomSettings.PRINTER_SENT_MESSAGE_EVENT:
+        if event == Events.DISCONNECTED:
+            self.printer_is_connected = False
+
+        elif event == Events.CONNECTED:
+            self.printer_is_connected = True
+            self.reset_check_timer()
+
+        elif event == CustomSettings.PRINTER_SENT_MESSAGE_EVENT:
             if command == self._settings.get([CustomSettings.PRINTER_SENT_MESSAGE_EVENT]):
                 self.print_state += 1
                 if self.print_state >= CustomSettings.PRINT_MESSAGE_NUM_STATES:
