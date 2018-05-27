@@ -122,7 +122,7 @@ class ArduinoLedControlPlugin(
         self.prev_target_temperature = None
         self.should_send_temperature = False
         self.check_timer_started = False
-        self.check_temp_time_interval = 3.0
+        self.check_temp_time_interval = 0.75
         self.min_temperature = 35.0  # blue light color
         self.max_temperature = 140.0  # red light color
 
@@ -211,7 +211,7 @@ class ArduinoLedControlPlugin(
         target_t = result[self.temp_check_tool]["target"]
         actual_t = result[self.temp_check_tool]["actual"]
 
-        self._logger.info("Temperature values; target: %s, actual: %s" % (target_t, actual_t))
+        # self._logger.info("Temperature values; target: %s, actual: %s" % (target_t, actual_t))
 
         # send temperature commands if a change in target temperature is detected
         if target_t != self.prev_target_temperature:
