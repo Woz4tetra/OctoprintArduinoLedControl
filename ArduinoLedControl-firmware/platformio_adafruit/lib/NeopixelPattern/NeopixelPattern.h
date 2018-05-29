@@ -10,6 +10,10 @@ enum  pattern { NONE, RAINBOW_CYCLE, THEATER_CHASE, COLOR_WIPE, SCANNER, FADE, F
 // Patern directions supported:
 enum  direction { FORWARD, REVERSE };
 
+// Top bar LED indices (inclusive)
+#define TOP_LEDS_START 9
+#define TOP_LEDS_END 19
+
 uint8_t whiteLedGammas[] = {
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,
@@ -295,7 +299,16 @@ public:
             uint8_t blue = ((Blue(Color1) * (TotalSteps - ext_index)) + (Blue(Color2) * ext_index)) / TotalSteps;
             uint8_t white = ((White(Color1) * (TotalSteps - ext_index)) + (White(Color2) * ext_index)) / TotalSteps;
 
-            ColorSet(Color(red, green, blue, white));
+            uint32_t temperature_color = Color(red, green, blue, white);
+            uint32_t white_color = Color(0, 0, 0, 255);
+            for (size_t i = 0; i < numPixels(); i++) {
+                if (TOP_LEDS_START - 3 <= i && i <= TOP_LEDS_END + 3) {
+                    setPixelColor(i, white_color);
+                }
+                else {
+                    setPixelColor(i, temperature_color);
+                }
+            }
             show();
         }
     }

@@ -10,7 +10,6 @@
 
 void on_pattern_complete();
 
-
 NeoPatterns strip(NUM_LEDS, LED_STRIP_PIN, NEO_GRBW + NEO_KHZ800, &on_pattern_complete);
 
 uint32_t cool_color = strip.Color(0, 0, 255);

@@ -191,7 +191,16 @@ class ArduinoLedControlPlugin(
             # with self._app_session_manager:
             # return flask.make_response(response, 500)
             return response
-        self.device.write(command + "\n")
+
+        try:
+            self.device.write(command + "\n")
+        except serial.SerialException:
+            response = "Device not found: '%s'" % result
+            self._logger.warn(response)
+            self.device.close()
+            self.device = None
+            return response
+
 
         self._logger.info("Command '%s' sent" % command)
 
